@@ -5,8 +5,7 @@ Goal: site is not a data tool, more a summary and advertisement for the work tha
 Inspiration:
 - [National Zoning Atlas](https://www.zoningatlas.org/) tells the story well in simple to understand terms
 
-
-This template should help get you started developing with Vue 3 in Vite.
+Follow the steps below to build the app.
 
 ## Recommended IDE Setup
 
@@ -33,3 +32,11 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## TODO
+
+- [ ] add montepelier zoning
+- [ ] add montpelier wastewater
+- [ ] add montpelier flood
+- [ ] add qualtrax form
+- [ ] create diagram to show how different groups work together 

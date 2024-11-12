@@ -37,7 +37,8 @@
     },
     initialCenter: {
       type: Array,
-      default: () => [-74.5, 44.5]
+      default: () => [-72.575, 44.2601],
+      required: false
     },
     initialZoom: {
       type: Number,
@@ -96,9 +97,9 @@ let map;
   
   // create initializeMap function
     const initializeMap = () => {
-        console.log(props.mapboxToken);
+        
         // Initialize the map
-        mapboxgl.accessToken = props.mapboxToken;
+        
         map = new mapboxgl.Map({
             accessToken: props.mapboxToken,
             container: 'map',
@@ -254,7 +255,7 @@ let map;
                 map.fitBounds(bounds, { padding: 50 });
 
                 // zoom map to initial zoom level
-                map.setZoom(10);
+                map.setZoom(11);
 
                 console.log('Map visualization complete');
 

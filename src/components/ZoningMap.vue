@@ -37,7 +37,7 @@
     },
     initialCenter: {
       type: Array,
-      default: () => [-74.5, 44.5]
+      default: () => [-72.575, 44.2601]
     },
     initialZoom: {
       type: Number,
@@ -96,9 +96,8 @@ let map;
   
   // create initializeMap function
     const initializeMap = () => {
-        console.log(props.mapboxToken);
+        
         // Initialize the map
-        mapboxgl.accessToken = props.mapboxToken;
         map = new mapboxgl.Map({
             accessToken: props.mapboxToken,
             container: 'zoning-map',
