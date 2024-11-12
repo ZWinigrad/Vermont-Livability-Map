@@ -18,9 +18,6 @@ import HelloWorld from './components/HelloWorld.vue'
         <h1 class="title">Vermont Zoning Atlas</h1>
         <h3 class="subtitle">Open data for building strong, resilient communities.</h3>
       </div>
-      <div class="column">
-        <img src="@/assets/vt-screenshot.png" alt="">
-      </div>
     </div>  
   </div>
 </section>
@@ -30,5 +27,19 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style scoped>
+  .hero-body {
+    background-image: url('./assets/vlm-test-banner.png');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+  }
 
+  .hero-body h1 {
+    font-size: 3rem;
+  }
+
+  .hero-body h3 {
+    font-size: 1.5rem;
+    margin-top: 10px
+  }
 </style>

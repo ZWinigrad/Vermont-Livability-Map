@@ -31,3 +31,4 @@ coverage
 
 # ignore full data file, it is too big for git
 data/Vermont_NZA-full.geojson
+map-conversions/*

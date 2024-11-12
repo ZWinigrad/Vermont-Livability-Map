@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "buefy": "npm:@ntohq/buefy-next@^0.1.4",
+    "d3": "^7.9.0",
     "flatgeobuf": "^3.35.0",
     "mapbox-gl": "^3.7.0",
     "pinia": "^2.2.6",

@@ -1,13 +1,13 @@
 <!-- ZoningMap.vue -->
 <template>
     <div class="map-container">
-        <button 
+        <!-- <button 
             @click="toggleNonResidential"
             :class="{ active: showingNonResidential }"
             class="filter-button"
             >
             {{ showingNonResidential ? 'Show All' : 'Show Nonresidential' }}
-            </button>
+            </button> -->
         <div id="zoning-map"></div>
         <div id="zoning-map-loading" class="loading">Loading data...</div>
         <div id="zoning-map-progress"></div>
@@ -24,7 +24,13 @@
   import { geojson } from 'flatgeobuf';
   import { watch } from 'vue'
   
-  
+  // TODO
+  // include note about beta map in progress
+  // include note about unzoned blank districts
+  // filter out Overlay, Overlay not affecting use, and Unkown
+  // add plus minuis icons to zoom in 
+  // add citation for flood data in montpleier map 
+
   // Props
   const props = defineProps({
     mapboxToken: {
@@ -37,11 +43,11 @@
     },
     initialCenter: {
       type: Array,
-      default: () => [-72.575, 44.2601]
+      default: () => [-72.5778, 44.4688]
     },
     initialZoom: {
       type: Number,
-      default: 9
+      default: 6
     },
     layerToHighlight: {
       type: String,
@@ -60,27 +66,30 @@
 watch(props, (newProps) => {
     console.log('props changed', newProps.layerToHighlight);
     if (newProps.layerToHighlight == 2) {
-        toggleNonResidential();
+        showSingleLayer("Primarily Residential");
+    } else if (newProps.layerToHighlight == 3) {
+        showSingleLayer("Nonresidential");
+    } else {
+        showAllLayers();
     }
 }, { deep: false});
 
   // Add toggle function
-const toggleNonResidential = () => {
+const showSingleLayer = (layerName) => {
     console.log('toggle', map)
   if (!map) return;
   
-  showingNonResidential.value = !showingNonResidential.value;
-  
-  if (showingNonResidential.value) {
     // First fade everything out
     map.setPaintProperty('fgb-layer', 'fill-opacity', 0);
     
     // After fade out, apply filter and fade back in
     setTimeout(() => {
-      map.setFilter('fgb-layer', ['==', ['get', 'Type_of_Zoning_District'], 'Nonresidential']);
+      map.setFilter('fgb-layer', ['==', ['get', 'Type_of_Zoning_District'], layerName]);
       map.setPaintProperty('fgb-layer', 'fill-opacity', 0.9);
-    }, 300); // Match this with your transition duration
-  } else {
+    }, 300); // Match this with your transition duration  
+};
+
+const showAllLayers = () => {
     // Fade out
     map.setPaintProperty('fgb-layer', 'fill-opacity', 0);
     
@@ -89,8 +98,7 @@ const toggleNonResidential = () => {
       map.setFilter('fgb-layer', null);
       map.setPaintProperty('fgb-layer', 'fill-opacity', 0.9);
     }, 100);
-  }
-};
+}
 
 let map;
   
@@ -103,7 +111,7 @@ let map;
             container: 'zoning-map',
             style: 'mapbox://styles/mapbox/light-v11',
             center: props.initialCenter,
-            zoom: 9
+            zoom: props.initialZoom
         });
 
         const loadingElement = document.getElementById('zoning-map-loading');
@@ -126,21 +134,28 @@ let map;
 
         // Function to get or assign color for zoning type
         function getZoningColor(zoningType) {
+            // convert zoningType to all uppercase
+            // zoningType = zoningType.toUpperCase();
+
             if (!zoningColors.has(zoningType)) {
                 zoningColors.set(zoningType, colors[colorIndex % colors.length]);
                 colorIndex++;
                 updateLegend();
             }
+            
             return zoningColors.get(zoningType);
         }
 
         // Function to update the legend
         function updateLegend() {
             const legendContent = document.createElement('div');
+
             Array.from(zoningColors.entries())
                 .sort((a, b) => a[0].localeCompare(b[0]))
                 .forEach(([type, color]) => {
+                    
                     const item = document.createElement('div');
+                    item.className = 'legend-item';
                     item.innerHTML = `<div class="color-block" style="background-color: ${color}"></div>${type}`;
                     legendContent.appendChild(item);
                 });
@@ -270,13 +285,17 @@ let map;
             const feature = e.features[0];
             const coordinates = e.lngLat;
 
-            const properties = Object.entries(feature.properties)
+            // filter out some properties that we don't need to show
+            const propertiesForTooltip = Object.entries(feature.properties)
+                // .filter(([key, value]) => (key == 'County' || key == 'Type_of_Zoning_District' || key == 'Jurisdiction' || key == 'Affordable_Housing_District' || key == 'Full_District_Name'))
                 .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
                 .join('<br>');
 
+            
+
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
-                .setHTML(properties)
+                .setHTML(propertiesForTooltip)
                 .addTo(map);
         });
 
@@ -290,7 +309,40 @@ let map;
         });
     };
   
+    const removeDuplicateLegendEntries = () => {
 
+        const legendElement = document.getElementById('zoning-map-legend');
+
+        // get all elements with class name legend-item
+        const legendItems = document.getElementsByClassName('legend-item');
+
+        const legendTypes = new Set();
+        console.log(legendItems, 'dups');
+        Array.from(legendItems).forEach((item, i) => {
+            const type = item.textContent;
+
+            if (legendTypes.has(type)) {
+                
+                legendTypes.delete(type);
+            } else {
+                legendTypes.add(type);
+            }
+        });
+        console.log('types', legendTypes);
+
+        // for each legendType, check to see if legendItems contains more than one
+        // if so, remove the duplicates
+        legendTypes.forEach((type) => {
+            const items = Array.from(legendItems).filter((item) => item.textContent === type);
+            if (items.length > 1) {
+                items.forEach((item, i) => {
+                    if (i > 0) {
+                        item.remove();
+                    }
+                });
+            }
+        });
+    };
   
   // Lifecycle hooks
   onMounted(() => {
@@ -305,7 +357,7 @@ let map;
   </script>
   
   <style>
-  #zoning-map { width: 100%; height: 600px; }
+  #zoning-map { width: 100%; height: 700px; }
         .map-container {
             position: relative;
         }
