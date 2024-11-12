@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Vermont-Livability-Map/', // Add this line - should match your repository name
   build: {
     outDir: 'docs'
   },
