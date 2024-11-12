@@ -50,7 +50,6 @@
   // Add new ref for tracking filter state
     const showingNonResidential = ref(false);
 //   const map = ref(null);
-const fgbPath = '/data/vt-zoning-spatial-index.fgb';
 
 
 watch(props, (newProps) => {
@@ -195,6 +194,8 @@ let map;
 
                 // Create a feature collection to store loaded features
                 let features = [];
+
+                const fgbPath = `${import.meta.env.BASE_URL}data/vt-zoning-spatial-index.fgb`
                 
                 // Start streaming features from the FGB file
                 const response = await fetch('public/data/vt-zoning-spatial-index.fgb');
