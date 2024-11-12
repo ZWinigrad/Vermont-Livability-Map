@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBF Map Visualization</title>
+    <!-- Load Mapbox GL JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet">
+    
+    <!-- Load Pbf and Geobuf libraries -->
+    <script src="https://unpkg.com/pbf@3.2.1/dist/pbf.js"></script>
+    <script src="https://unpkg.com/geobuf@3.0.2/dist/geobuf.js"></script>
+    
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="loading" class="loading">Loading data...</div>
+
+    <script>
+        // Initialize the map
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYmRjb29sZXkiLCJhIjoiY20zM2Nzd212MWl3cTJrcTM5NWNrcjk0byJ9.40rHMMd1TXsvF8zeqxLaBw'; // Replace with your Mapbox token
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v11',
+            center: [-74.5, 40], // Adjust to your data's location
+            zoom: 9
+        });
+
+        // Show loading indicator
+        const loadingElement = document.getElementById('loading');
+
+        // Function to decode PBF data
+        async function loadAndDecodePBF(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const arrayBuffer = await response.arrayBuffer();
+            console.log('ArrayBuffer loaded:', arrayBuffer.byteLength, 'bytes');
+            
+            try {
+                const pbfData = new Pbf(new Uint8Array(arrayBuffer));
+                console.log('PBF instance created');
+                const decodedData = geobuf.decode(pbfData);
+                console.log('Data decoded successfully');
+                return decodedData;
+            } catch (error) {
+                console.error('Error during PBF decoding:', error);
+                throw error;
+            }
+        }
+
+        map.on('load', async () => {
+            try {
+                loadingElement.style.display = 'block';
+                console.log('Starting to load PBF data...');
+
+                // Load and decode the PBF file
+                const geojson = await loadAndDecodePBF('../data/Vermont_NZA-compressed.pbf');
+                console.log('GeoJSON converted:', geojson);
+
+                // Add the source and layer to the map
+                map.addSource('pbf-data', {
+                    type: 'geojson',
+                    data: geojson,
+                    generateId: true
+                });
+
+                // Add a layer to visualize the data
+                map.addLayer({
+                    id: 'pbf-layer',
+                    type: 'fill', // Adjust based on your geometry type
+                    source: 'pbf-data',
+                    paint: {
+                        'fill-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'value'], // Replace with your property name
+                            0, '#fee5d9',
+                            100, '#333333'
+                        ],
+                        'fill-opacity': 0.7
+                    }
+                });
+
+                // Fit map to data bounds
+                const bounds = new mapboxgl.LngLatBounds();
+                geojson.features.forEach(feature => {
+                    if (feature.geometry) {
+                        const coords = feature.geometry.coordinates;
+                        if (feature.geometry.type === 'Polygon') {
+                            coords[0].forEach(coord => bounds.extend(coord));
+                        } else if (feature.geometry.type === 'Point') {
+                            bounds.extend(coords);
+                        }
+                    }
+                });
+                map.fitBounds(bounds, { padding: 50 });
+
+                console.log('Map visualization complete');
+
+            } catch (error) {
+                console.error('Error loading PBF data:', error);
+                loadingElement.textContent = 'Error loading data';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        });
+
+        // Add interaction
+        map.on('click', 'pbf-layer', (e) => {
+            if (!e.features.length) return;
+
+            const feature = e.features[0];
+            const coordinates = e.lngLat;
+
+            const properties = Object.entries(feature.properties)
+                .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                .join('<br>');
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(properties)
+                .addTo(map);
+        });
+
+        // Change cursor on hover
+        map.on('mouseenter', 'pbf-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'pbf-layer', () => {
+            map.getCanvas().style.cursor = '';
+        });
+    </script>
+</body>
+</html>

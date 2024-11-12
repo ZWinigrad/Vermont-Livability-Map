@@ -1,4 +1,5 @@
 # Vermont Livability Map (BETA)
+
 [Vermont Livability Map Page](https://verso-uvm.github.io/Vermont-Livability-Map/
 )
 
@@ -35,10 +36,40 @@ To get a local copy up and running, follow these instructions.
 - **Node.js** and **npm**: Required for running the app locally.
 - **Git**: Required for cloning the repository.
 
-### Installation
+## Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/VERSO-UVM/Vermont-Livability-Map.git
+
+### Build process
+
+This app is built using Vue3 and Vite. Follow the steps below to build the app.
+
+#### Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+
+#### Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+#### Project Setup
+
+```sh
+npm install
+```
+
+#### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+#### Compile and Minify for Production
+
+```sh
+npm run build
+```
 
 ### Contributing
 Contributions are welcome! Please see our Contributing Guide for ways to get started.
@@ -52,3 +83,12 @@ Contributions are welcome! Please see our Contributing Guide for ways to get sta
 ### License
 Distributed under the MIT License. See [LICENSE](LICENSE.md) for more information.
 
+
+
+## TODO
+
+- [ ] add montepelier zoning
+- [ ] add montpelier wastewater
+- [ ] add montpelier flood
+- [x] add qualtrax form
+- [ ] create diagram to show how different groups work together 
