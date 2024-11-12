@@ -198,7 +198,7 @@ let map;
                 const fgbPath = `https://verso-uvm.github.io/Vermont-Livability-Map/data/vt-zoning-spatial-index.fgb`
                 
                 // Start streaming features from the FGB file
-                const response = await fetch('public/data/vt-zoning-spatial-index.fgb');
+                const response = await fetch(fgbPath);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 // Use FlatGeoBuf streaming API
