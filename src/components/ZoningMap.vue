@@ -30,10 +30,6 @@
       type: String,
       required: true
     },
-    fgbPath: {
-      type: String,
-      required: true
-    },
     initialCenter: {
       type: Array,
       default: () => [-72.5778, 44.4688]
@@ -54,6 +50,7 @@
   // Add new ref for tracking filter state
     const showingNonResidential = ref(false);
 //   const map = ref(null);
+const fgbPath = '/data/vt-zoning-spatial-index.fgb';
 
 
 watch(props, (newProps) => {
@@ -200,7 +197,7 @@ let map;
                 let features = [];
                 
                 // Start streaming features from the FGB file
-                const response = await fetch('../data/vt-zoning-spatial-index.fgb');
+                const response = await fetch('public/data/vt-zoning-spatial-index.fgb');
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 // Use FlatGeoBuf streaming API

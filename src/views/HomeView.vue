@@ -159,7 +159,6 @@ import VueScrollama from 'vue3-scrollama'
           class="sticky"
           :layerToHighlight="currStep"
           mapboxToken="pk.eyJ1IjoiYmRjb29sZXkiLCJhIjoiY20zM2Nzd212MWl3cTJrcTM5NWNrcjk0byJ9.40rHMMd1TXsvF8zeqxLaBw"
-          fgbPath="/vt-zoning-spatial-index.fgb"
            />
         </div>
         
@@ -174,7 +173,7 @@ import VueScrollama from 'vue3-scrollama'
         <MontpelierMap 
           class="sticky"
           mapboxToken="pk.eyJ1IjoiYmRjb29sZXkiLCJhIjoiY20zM2Nzd212MWl3cTJrcTM5NWNrcjk0byJ9.40rHMMd1TXsvF8zeqxLaBw"
-          fgbPath="/vt-zoning-spatial-index.fgb"
+          fgbPath="../../data/vt-zoning-spatial-index.fgb"
            />
            <VueScrollama
             :debug="false"
