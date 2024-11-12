@@ -23,13 +23,6 @@
   import 'mapbox-gl/dist/mapbox-gl.css';
   import { geojson } from 'flatgeobuf';
   import { watch } from 'vue'
-  
-  // TODO
-  // include note about beta map in progress
-  // include note about unzoned blank districts
-  // filter out Overlay, Overlay not affecting use, and Unkown
-  // add plus minuis icons to zoom in 
-  // add citation for flood data in montpleier map 
 
   // Props
   const props = defineProps({
