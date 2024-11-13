@@ -87,11 +87,11 @@ Distributed under the MIT License. See [LICENSE](LICENSE.md) for more informatio
 
 ## TODO
 
-- [ ] add static maps showing multiple layers for monpelier
+- [x] add static maps showing multiple layers for monpelier
 - [x] add qualtrax form
-- [ ] create diagram to show how different groups work together 
-- [ ] include note about unzoned blank districts
-- [ ] include note about beta map in progress
+- [x] create diagram to show how different groups work together 
+- [x] include note about unzoned blank districts
+- [x] include note about beta map in progress
 - [ ] filter out Overlay, Overlay not affecting use, and Unkown
-- [ ] add plus minuis icons to zoom in 
-- [ ] add citation for flood data in montpleier map 
+- [x] add plus minuis icons to zoom in 
+- [x] add citation for flood data in montpleier map 

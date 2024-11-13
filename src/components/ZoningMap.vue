@@ -1,6 +1,10 @@
 <!-- ZoningMap.vue -->
 <template>
     <div class="map-container">
+        <div class="disclaimer">
+            <span class="exclamation-icon">!</span>
+            This map is in Beta, and may contain inaccuracies.
+        </div>
         <!-- <button 
             @click="toggleNonResidential"
             :class="{ active: showingNonResidential }"
@@ -298,6 +302,9 @@ let map;
         map.on('mouseleave', 'fgb-layer', () => {
             map.getCanvas().style.cursor = '';
         });
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
     };
   
     const removeDuplicateLegendEntries = () => {
@@ -348,6 +355,27 @@ let map;
   </script>
   
   <style>
+.disclaimer {
+    background: rgb(255, 237, 199);
+    padding: 5px 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* exlamation-icon with circle */
+.exclamation-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #f8b400;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 10px;
+}
+
   #zoning-map { width: 100%; height: 700px; }
         .map-container {
             position: relative;
