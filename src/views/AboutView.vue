@@ -1,8 +1,8 @@
 <template>
   <div class="about">
-    <div class="container">
-    <h1>More about the Vermont Zoning Atlas</h1>
-      <h3>Team</h3>
+    <div class="about-container">
+    <h1 class="title" style="margin-top: 50px">More about the Vermont Zoning Atlas</h1>
+      <h3 class="subtitle">Team</h3>
       <p>
         Inspired by Sara Bronin’s keynote speech at the 2022 Vermont Statewide Housing Conference, University of Vermont students Yoshi Bird and Michael Arnold approached the state and other partners about creating a dataset that could visualize geospatial distributions of land use regulations across Vermont down to the individual district level. Emily Sun, a planner from New York City and Middlebury graduate, volunteered as the founding Zoning Analyst Team Lead, supported by Dr. William Hegman of Middlebury College, while Colin Dowey, former of the Agency of Commerce and Community Development, acted as the consulting Geospatial Lead.
         </p>
@@ -13,7 +13,7 @@
         The project was also presented at the <a href="https://www.uvm.edu/uvminnovations/invention-2-venture-i2v-conference" target="_blank">2024 Invention2Venture</a>  April 18, 2024 at the University of Vermont as part of a talk on the <a href="https://verso.w3.uvm.edu/orca/" target="_blank">Open Research Community Accelerator (ORCA)</a> program with Zoe Srenden presenting along with other team members.
         </p><br>
         <img alt="Rise Summit" src="@/assets/rise_summit.png"/>
-        <p><br>
+        <br>
         <p>
         The Open Research Community Accelerator (ORCA) is a student program that grows the impact of academic research by making research products accessible to other academics, local businesses, and community members through open source project. ORCA creates these products through student project teams called Pods — groups of dynamic and passionate students who learn industry open source practices by working on real projects destined for public use. This program is run and funded by the University of Vermont Open Source Program Office (VERSO). ORCA’s goals are to produce impactful, accessible, open source research tools by training tomorrow’s workforce in marketable open source skills.
         </p><br>
@@ -27,5 +27,15 @@
 </template>
 
 <style>
+  .about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-bottom: 150px
+  }
 
+  .about-container .subtitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 30px
+  }
 </style>
