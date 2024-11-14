@@ -249,7 +249,7 @@ sup {
             </div>
             <div class="step centered" data-step-no="5">
               <p>
-                These yellow lines mark the sewage lines acrtoss the city.
+                These yellow lines mark the sewage lines across the city.
               </p>
             </div>
            <div class="step centered" data-step-no="6">
