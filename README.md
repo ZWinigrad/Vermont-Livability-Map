@@ -95,3 +95,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE.md) for more informatio
 - [ ] filter out Overlay, Overlay not affecting use, and Unkown
 - [x] add plus minuis icons to zoom in 
 - [x] add citation for flood data in montpleier map 
+- [ ] programmatic implementation of town specific zoning stats (x number of single zoned districts, etc)
